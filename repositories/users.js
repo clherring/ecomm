@@ -3,6 +3,9 @@
 const fs = require("fs");
 // use crypto library to generate unique id for each input
 const crypto = require("crypto");
+const util = require("util");
+
+const scrypt = util.promisify(crypto.scrypt);
 
 class UsersRepository {
   /*constructor gets called instantly when instance of class created - use this
@@ -40,16 +43,41 @@ class UsersRepository {
   }
   //create a user with given attributes (attrs)
   async create(attrs) {
+    //attrs === { email: '', password: ''}
     attrs.id = this.randomId();
+    /*for every byte created, 2 seperate characters are produced.
+This gives us a random seris of characters for our "salt" */
+    const salt = crypto.randomBytes(8).toString("hex");
+
+    const buf = await scrypt(attrs.password, salt, 64);
+
     /*every time we want to make a change to our users, we're first going to load up entire
     user.json file - the most recent collection of our data, and then add in new user to file,
     and write it back to our hard drive*/
     const records = await this.getAll();
-    records.push(attrs);
+    const record = {
+      ...attrs,
+      password: `${buf.toString("hex")}.${salt}`,
+    };
+    records.push(record);
     /*write updated 'records' array back to this.filename.
     Turn data back into JSON and then write data back to file */
     await this.writeAll(records);
-    return attrs;
+    return record;
+  }
+
+  async comparePasswords(saved, supplied) {
+    //"saved" password is saved in our database. 'hashed.salt'
+    //"supplied" is given to us by a user trying to sign in
+    //this code below is same as line below it
+    // const result = saved.split(".");
+    // const hashed = result[0];
+    // const salt = result[1];
+    //this is not a new array, this is destructuring to assign values ---v
+    const [hashed, salt] = saved.split(".");
+    const hashedSuppliedBuf = await scrypt(supplied, salt, 64);
+    //return results of this following boolean
+    return hashed === hashedSuppliedBuf.toString("hex");
   }
   /*Save multiple records. 2nd argument to JSON.stringify to customize how thing
   is evaluated. null bc we don't want any custom formatters, but the 3rd argument - 

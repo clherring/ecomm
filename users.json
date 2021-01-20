@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "email": "herring.christie@yahoo.com",
+    "password": "dknk",
+    "id": "7e9d601d"
+  },
+  {
+    "email": "nedward777@gmail.com",
+    "password": "f",
+    "id": "86bce358"
+  },
+  {
+    "email": "clherring@gmail.com",
+    "password": "a",
+    "id": "b578ab67"
+  },
+  {
+    "email": "fuzzynuzzy@outlook.com",
+    "password": "886641cbe7e8c108e4d89693809e17478b296235d6c12288d967c6050bcf139798b0c44049212195ce9ff76f99b9a4035e83174fb481f13d7902157cfd603030.4d01e1ad8f7396ce",
+    "id": "dc84be41"
+  },
+  {
+    "email": "test10@test.com",
+    "password": "b9e0ea80bf194593c725add67722a840c05b6500d48ae75278e7d672e30fe612f967ed03fdf7e9f5062c62af874f6d89b8f299cac5ac020651f6d6f2164e995d.a61e2644eaf56bde",
+    "id": "7b3b7420"
+  }
+]
