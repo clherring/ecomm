@@ -14,7 +14,7 @@ module.exports = class Repository {
       fs.writeFileSync(this.filename, "[]");
     }
   }
-
+  //pass in all properties we want to save
   async create(attrs) {
     attrs.id = this.randomId();
 

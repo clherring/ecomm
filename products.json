@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "title": "ad",
+    "price": "10",
+    "image": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=",
+    "id": "3e529754"
+  },
+  {
+    "title": "a product",
+    "price": 10,
+    "image": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=",
+    "id": "e8f86f69"
+  }
+]
