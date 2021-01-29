@@ -4,9 +4,7 @@ const util = require("util");
 const Repository = require("./repository");
 
 const scrypt = util.promisify(crypto.scrypt);
-/* copy and paste all methods from "Repository" and put them into this 
-new UsersRepository class
-*/
+
 class UsersRepository extends Repository {
   async comparePasswords(saved, supplied) {
     // Saved -> password saved in our database. 'hashed.salt'
@@ -17,7 +15,6 @@ class UsersRepository extends Repository {
     return hashed === hashedSuppliedBuf.toString("hex");
   }
 
-  //this create method is very specific to 'user'
   async create(attrs) {
     attrs.id = this.randomId();
 

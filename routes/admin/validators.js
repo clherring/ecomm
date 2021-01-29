@@ -9,7 +9,6 @@ module.exports = {
   requirePrice: check("price")
     .trim()
     .toFloat()
-    //products has minimum price of $1
     .isFloat({ min: 1 })
     .withMessage("Must be a number greater than 1"),
   requireEmail: check("email")
@@ -34,8 +33,9 @@ module.exports = {
     .custom((passwordConfirmation, { req }) => {
       if (passwordConfirmation !== req.body.password) {
         throw new Error("Passwords must match");
+      } else {
+        return true;
       }
-      return true;
     }),
   requireEmailExists: check("email")
     .trim()

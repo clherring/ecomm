@@ -11,7 +11,6 @@ Look in current directory for 'public' folder and make
 everything available to outside world
 */
 app.use(express.static("public"));
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cookieSession({
