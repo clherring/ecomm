@@ -57,8 +57,36 @@ router.get("/admin/products/:id/edit", requireAuth, async (req, res) => {
   res.send(productsEditTemplate({ product }));
 });
 
-router.post("/admin/products/:id/edit", requireAuth, async (req, res) => {
+router.post(
+  "/admin/products/:id/edit",
+  requireAuth,
   //form submission here, possible file upload
-});
+  upload.single("image"),
+  [requireTitle, requirePrice],
+  handleErrors(productsEditTemplate, async (req) => {
+    const product = await productsRepo.getOne(req.params.id);
+    return { product };
+  }),
+  async (req, res) => {
+    const changes = req.body;
+    /*take updated title, image, other info that may have been changed
+    and apply all those changes into products repo for particular product.
+    So if there is a req.file (file uploaded by user), we can convert to string and then
+    apply to product repo
+    */
+    if (req.file) {
+      changes.image = req.file.buffer.toString("base64");
+    }
+    /*update method comes from repository class we created, two params, the id and 
+    the attributes we're updating
+    */
+    try {
+      await productsRepo.update(req.params.id, changes);
+    } catch (err) {
+      return res.send("Could not find item");
+    }
+    res.redirect("/admin/products");
+  }
+);
 
 module.exports = router;
