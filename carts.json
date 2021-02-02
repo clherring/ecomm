@@ -14,11 +14,15 @@
   {
     "items": [
       {
-        "id": "ac3d7258",
+        "id": "a8f3ec8c",
+        "quantity": 2
+      },
+      {
+        "id": "e7fccbd5",
         "quantity": 1
       },
       {
-        "id": "a8f3ec8c",
+        "id": "9317ff17",
         "quantity": 2
       }
     ],

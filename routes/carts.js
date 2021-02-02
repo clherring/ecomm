@@ -1,6 +1,7 @@
 const express = require("express");
-const carts = require("../repositories/carts");
 const cartsRepo = require("../repositories/carts");
+const productsRepo = require("../repositories/products");
+const cartShowTemplate = require("../views/carts/show");
 
 const router = express.Router();
 
@@ -35,10 +36,47 @@ router.post("/cart/products", async (req, res) => {
     items: cart.items,
   });
 
-  res.send("product added to cart");
+  res.redirect("/cart");
 });
 //receive a get request to show all items in cart
+router.get("/cart", async (req, res) => {
+  //make sure user has cart assigned to them, if no cart, then
+  // we redirect to product listing page
+  if (!req.session.cartId) {
+    return res.redirect("/");
+  }
 
-//receive a post request to delete an item from a cart
+  const cart = await cartsRepo.getOne(req.session.cartId);
+  /*once we get our cart, we need to iterate over list of items to grab and display
+  product information by id in products repo
+  */
+  for (let item of cart.items) {
+    //item === { id: , quantity: }
+    // grab product by id from products repo
+    const product = await productsRepo.getOne(item.id);
+    item.product = product;
+  }
+  res.send(cartShowTemplate({ items: cart.items }));
+});
+
+/*receive a post request to delete an item from a cart
+  we want to remove that id from array 
+and then return cart with leftover items back to carts repo
+*/
+router.post("/cart/products/delete", async (req, res) => {
+  const { itemId } = req.body;
+  //reach into carts repo and find cart with given id, save it to cart variable
+  const cart = await cartsRepo.getOne(req.session.cartId);
+  /*then iterate through list of items, when we find id that matches. 
+  "itemId" is coming out of req.body, item.id is coming from item we are 
+  iterating over
+
+  */
+  const items = cart.items.filter((item) => item.id !== itemId);
+
+  await cartsRepo.update(req.session.cartId, { items });
+  //redirect user back to cart
+  res.redirect("/cart");
+});
 
 module.exports = router;
